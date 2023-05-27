@@ -7,6 +7,8 @@ const cors = require('cors')
 const corsOptions = require('./config/corsOptions')
 const connectDB = require('./config/dbConn')
 const mongoose = require('mongoose')
+const morgan = require('morgan')
+const cookieParser = require('cookie-parser')
 
 const PORT = process.env.PORT || 3500
 
@@ -16,9 +18,14 @@ app.use(cors(corsOptions))
 
 app.use(express.json())
 
+app.use(cookieParser())
+
+app.use(morgan('tiny'))
+
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', require('./routes/root'))
+app.use('/auth', require('./routes/authRoutes'))
 app.use('/users', require('./routes/userRoutes'))
 app.use('/auth ', require('./routes/authRoutes'))
 
